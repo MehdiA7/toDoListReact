@@ -8,26 +8,50 @@ function App() {
     const [inputTask, setInputTask] = useState("");
 
     const handleAddTask = () => {
-		setTodos([...todos, inputTask]);
-		setInputTask("");
-	};
+        setTodos([...todos, inputTask]);
+        setInputTask("");
+    };
+
+    const handleKeyDown = (event) => {
+        if (event.key === "Enter") {
+            handleAddTask();
+        }
+    };
+
+    const handleDeleteTask = (taskToDelete) => {
+        setTodos(todos.filter((task) => task !== taskToDelete))
+    };
 
     return (
         <div>
             <h1>My Todo App</h1>
             <input
-				value={inputTask}
+                value={inputTask}
                 type="text"
                 onChange={(event) => setInputTask(event.target.value)}
+                onKeyDown={handleKeyDown}
             />
             <br />
-            <button onClick={handleAddTask}>Add Task</button>
+            <button onClick={handleAddTask}>
+                Add Task
+            </button>
             <h2>Todos</h2>
-			<ul>
-            {todos.map((x) => {
-                return <li key={x}><input type="checkbox" name="isComplete" />{x}<button className="liButton">Delete</button></li>;
-            })}
-        </ul>
+            <ul>
+                {todos.map((task, index) => {
+                    return (
+                        <li key={index}>
+                            <input type="checkbox" name="isComplete" />
+                            {task}
+                            <button
+                                className="liButton"
+                                onClick={() => handleDeleteTask(task)}
+                            >
+                                Delete
+                            </button>
+                        </li>
+                    );
+                })}
+            </ul>
         </div>
     );
 }
