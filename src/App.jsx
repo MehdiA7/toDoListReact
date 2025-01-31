@@ -21,11 +21,11 @@ function App() {
         }
     };
 
-    const handleCheckBox = (event, task) => {
-        console.log(task)
-        task.state = event.target.checked;
-        console.log(event)
-        // Je me suis arrêter ici je dois validé le changement dans la liste 
+    const handleCheckBox = (event, index) => {
+        console.log(index)
+        // Je me suis arrêter ici je dois validé le changement dans la liste
+        setTodos(...todos[index].state = event.target.checked);
+        console.log(todos)
     }
 
     const handleDeleteTask = (taskToDelete) => {
@@ -34,7 +34,7 @@ function App() {
 
     return (
         <div>
-            <h1>My Todo App</h1>
+            <h1>My To-Do List</h1>
             <input
                 value={inputTask}
                 type="text"
@@ -43,13 +43,15 @@ function App() {
             />
             <br />
             <button onClick={handleAddTask}>Add Task</button>
-            <h2>Todos</h2>
+            <h2>To-Do</h2>
             <ul>
                 {todos.map((task, index) => {
                     return (
                         <li key={index}>
-                            <input type="checkbox" name="isComplete" onChange={(event) => handleCheckBox(event, task)} />
+                            <input type="checkbox" name="isComplete" onChange={(event) => handleCheckBox(event, index)} />
+                            <p>
                             {task.nameOfTask}
+                            </p>
                             <button
                                 className="liButton"
                                 onClick={() => handleDeleteTask(task)}
