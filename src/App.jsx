@@ -8,7 +8,10 @@ function App() {
     const [inputTask, setInputTask] = useState("");
 
     const handleAddTask = () => {
-        setTodos([...todos, inputTask]);
+        if (inputTask.trim() === "") {
+            return;
+        }
+        setTodos([...todos, {state: false, nameOfTask: inputTask}]);
         setInputTask("");
     };
 
@@ -18,8 +21,15 @@ function App() {
         }
     };
 
+    const handleCheckBox = (event, task) => {
+        console.log(task)
+        task.state = event.target.checked;
+        console.log(event)
+        // Je me suis arrêter ici je dois validé le changement dans la liste 
+    }
+
     const handleDeleteTask = (taskToDelete) => {
-        setTodos(todos.filter((task) => task !== taskToDelete))
+        setTodos(todos.filter((task) => task !== taskToDelete));
     };
 
     return (
@@ -32,16 +42,14 @@ function App() {
                 onKeyDown={handleKeyDown}
             />
             <br />
-            <button onClick={handleAddTask}>
-                Add Task
-            </button>
+            <button onClick={handleAddTask}>Add Task</button>
             <h2>Todos</h2>
             <ul>
                 {todos.map((task, index) => {
                     return (
                         <li key={index}>
-                            <input type="checkbox" name="isComplete" />
-                            {task}
+                            <input type="checkbox" name="isComplete" onChange={(event) => handleCheckBox(event, task)} />
+                            {task.nameOfTask}
                             <button
                                 className="liButton"
                                 onClick={() => handleDeleteTask(task)}
