@@ -11,8 +11,10 @@ function App() {
         if (inputTask.trim() === "") {
             return;
         }
-        setTodos([...todos, {state: false, nameOfTask: inputTask}]);
+        setTodos([...todos, { checked: false, nameOfTask: inputTask }]);
         setInputTask("");
+
+        console.log(todos)
     };
 
     const handleKeyDown = (event) => {
@@ -22,11 +24,10 @@ function App() {
     };
 
     const handleCheckBox = (event, index) => {
-        console.log(index)
-        // Je me suis arrêter ici je dois validé le changement dans la liste
-        setTodos(...todos[index].state = event.target.checked);
-        console.log(todos)
-    }
+        let newList = [...todos];
+        newList[index].checked = event.target.checked;
+        setTodos(newList);
+    };
 
     const handleDeleteTask = (taskToDelete) => {
         setTodos(todos.filter((task) => task !== taskToDelete));
@@ -48,13 +49,17 @@ function App() {
                 {todos.map((task, index) => {
                     return (
                         <li key={index}>
-                            <input type="checkbox" name="isComplete" onChange={(event) => handleCheckBox(event, index)} />
-                            <p>
-                            {task.nameOfTask}
-                            </p>
+                            <input
+                                type="checkbox"
+                                name="isComplete"
+                                onChange={(event) =>
+                                    handleCheckBox(event, index)
+                                }
+                            />
+                            <p>{task.nameOfTask}</p>
                             <button
                                 className="liButton"
-                                onClick={() => handleDeleteTask(task)}
+                                onClick={() => setTodos(todos.filter((element) => element !== task))}
                             >
                                 Delete
                             </button>
@@ -62,6 +67,10 @@ function App() {
                     );
                 })}
             </ul>
+            <button onClick={() => setTodos(todos.filter(todo => todo.checked === false))}>Uncompleted</button>
+            <button onClick={() => setTodos(todos.filter(todo => todo.checked === true))}>Complete</button>
+            <button className="liButton">Delete Completed</button>
+            <button className="liButton">Clear All</button>
         </div>
     );
 }
