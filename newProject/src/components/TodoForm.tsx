@@ -1,7 +1,7 @@
 import { FC, useState } from "react";
 // define type of list
 type TodoFormProps = {
-    onAddTodo:(todo: string) => void;
+    onAddTodo:(input: string) => void;
 };
 
 // component for the form we have the input and the add button to submit a new task
